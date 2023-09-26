@@ -21,7 +21,7 @@ class Movie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['movie:read', 'category:read', 'actor:read'])]
+    #[Groups(['movie:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -29,11 +29,9 @@ class Movie
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['movie:read'])]
     private ?\DateTime $releaseDate = null;
 
     #[ORM\Column]
-    #[Groups(['movie:read'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
