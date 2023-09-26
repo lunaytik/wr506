@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext: ['groups' => ['movie:read']],
 )]
+#[ApiFilter(RangeFilter::class, properties: ['duration' => 'partial'])]
 class Movie
 {
     #[ORM\Id]
@@ -25,6 +29,7 @@ class Movie
     #[Groups(['movie:read', 'category:read', 'actor:read'])]
     #[Assert\NotBlank(message: 'Le titre du film est obligatoire !')]
     #[Assert\Length(max: 255, maxMessage: 'Le titre doit faire au maximum {{ limit }} caractères')]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -43,6 +48,7 @@ class Movie
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'La durée est obligatoire !')]
     #[Assert\GreaterThan(0, message: 'La durée doit être supérieure à {{ compared_value }}')]
+    #[ApiFilter(RangeFilter::class)]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
