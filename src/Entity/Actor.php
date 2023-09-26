@@ -33,6 +33,7 @@ class Actor
     private Collection $movies;
 
     #[ORM\ManyToOne(inversedBy: 'actor')]
+    #[Groups(['actor:read'])]
     private ?Nationality $nationality = null;
 
     public function __construct()
