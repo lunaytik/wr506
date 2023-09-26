@@ -24,6 +24,7 @@ class Movie
     #[ORM\Column(length: 255)]
     #[Groups(['movie:read', 'category:read', 'actor:read'])]
     #[Assert\NotBlank(message: 'Le titre du film est obligatoire !')]
+    #[Assert\Length(max: 255, maxMessage: 'Le titre doit faire au maximum {{ limit }} caractères')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -34,6 +35,8 @@ class Movie
 
     #[ORM\Column]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'La date de sortie est obligatoire !')]
+    #[Assert\Date(message: 'Le date de sortie doit être dans le format (Y-m-d)')]
     private ?\DateTime $releaseDate = null;
 
     #[ORM\Column]
