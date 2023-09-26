@@ -4,10 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 ;
 
-class MovieFixtures extends Fixture
+class MovieFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public const MOVIE_REFERENCE = 'movie_';
@@ -44,6 +45,7 @@ class MovieFixtures extends Fixture
     {
         return [
             CategoryFixtures::class,
+            ActorFixtures::class
         ];
     }
 }
