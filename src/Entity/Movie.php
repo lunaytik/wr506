@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
@@ -22,10 +23,13 @@ class Movie
 
     #[ORM\Column(length: 255)]
     #[Groups(['movie:read', 'category:read', 'actor:read'])]
+    #[Assert\NotBlank(message: 'Le titre du film est obligatoire !')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'La description est obligatoire !')]
+    #[Assert\Length(min: 10, max: 255, minMessage: 'La description doit être d\'au moins {{ limit }} caractères', maxMessage: 'La description doit faire au maximum {{ limit }} caractères')]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -34,6 +38,8 @@ class Movie
 
     #[ORM\Column]
     #[Groups(['movie:read'])]
+    #[Assert\NotBlank(message: 'La durée est obligatoire !')]
+    #[Assert\GreaterThan(0, message: 'La durée doit être supérieure à {{ compared_value }}')]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'movies')]
