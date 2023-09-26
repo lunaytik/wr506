@@ -19,7 +19,7 @@ class ActorFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         $lastNames = [
-            'Doe', 'Dupont', 'Poire', 'Duc', 'Prince', 'Rock'
+            'Doe', 'Dupont', 'Pearce', 'Duc', 'Prince', 'Rock'
         ];
 
         for ($i=0; $i <= 10; $i++) {
