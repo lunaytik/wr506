@@ -59,6 +59,9 @@ class Movie
     #[Groups(['movie:read'])]
     private Collection $actor;
 
+    #[ORM\ManyToOne(inversedBy: 'movies')]
+    private ?User $owner = null;
+
     public function __construct()
     {
         $this->actor = new ArrayCollection();
@@ -150,6 +153,18 @@ class Movie
     public function removeActor(Actor $actor): static
     {
         $this->actor->removeElement($actor);
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

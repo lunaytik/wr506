@@ -19,6 +19,7 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
             $movie = new Movie();
             $movie->setTitle('Movie'.$i)
                 ->setCategory($this->getReference(CategoryFixtures::CAT_REFERENCE.rand(1, 5)))
+                ->setOwner($this->getReference(UserFixtures::USER_REFERENCE.rand(1,6)))
                 ->setDescription('Description movie'.$i)
                 ->setDuration(rand(80, 250))
                 ->setReleaseDate(new \DateTime('now'));
@@ -45,7 +46,8 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             CategoryFixtures::class,
-            ActorFixtures::class
+            ActorFixtures::class,
+            UserFixtures::class
         ];
     }
 }
