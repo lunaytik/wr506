@@ -94,7 +94,7 @@ class Movie
     #[Groups(['movie:read'])]
     private ?User $owner = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['movie:read'])]
     private ?string $poster = null;
 
