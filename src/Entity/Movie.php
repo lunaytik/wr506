@@ -60,7 +60,13 @@ class Movie
     #[ORM\Column(length: 255)]
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'La description est obligatoire !')]
-    #[Assert\Length(min: 10, max: 255, minMessage: 'La description doit être d\'au moins {{ limit }} caractères', maxMessage: 'La description doit faire au maximum {{ limit }} caractères')]
+    #[Assert\Length(
+        min: 10,
+        max: 255,
+        minMessage: 'La description doit être d\'au moins {{ limit }} caractères',
+        maxMessage: 'La description doit faire au maximum {{ limit }} caractères'
+    )
+    ]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
