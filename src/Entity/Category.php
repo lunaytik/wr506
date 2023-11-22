@@ -27,6 +27,7 @@ class Category
     #[Assert\NotBlank(message: 'Le nom de la catégorie est obligatoire !')]
     private ?string $name = null;
 
+    /** @var Collection<int, Movie> */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Movie::class)]
     #[Groups(['category:read'])]
     private Collection $movies;

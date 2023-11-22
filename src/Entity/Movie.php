@@ -85,6 +85,7 @@ class Movie
     #[Groups(['movie:read'])]
     private ?Category $category = null;
 
+    /** @var Collection<int, Actor> */
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
     #[Groups(['movie:read'])]
     private Collection $actor;

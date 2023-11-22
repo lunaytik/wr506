@@ -6,6 +6,7 @@ use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use DateTime;
 
 class MovieFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -20,7 +21,7 @@ class MovieFixtures extends Fixture implements DependentFixtureInterface
                 ->setOwner($this->getReference(UserFixtures::USER_REFERENCE . rand(1, 6)))
                 ->setDescription('Description movie' . $i)
                 ->setDuration(rand(80, 250))
-                ->setReleaseDate(new \DateTime('now'))
+                ->setReleaseDate(new DateTime('now'))
                 ->setPoster('/images/movie' . $i . '.jpg');
             $this->addReference(self::MOVIE_REFERENCE . $i, $movie);
 
