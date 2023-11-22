@@ -19,6 +19,7 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['actor:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -31,6 +32,7 @@ class Actor
     #[Assert\NotBlank(message: 'Le nom de l\'acteur est obligatoire !')]
     private ?string $lastName = null;
 
+    /** @var Collection<int, Movie> */
     #[ORM\ManyToMany(targetEntity: Movie::class, mappedBy: 'actor')]
     #[Groups(['actor:read'])]
     private Collection $movies;
