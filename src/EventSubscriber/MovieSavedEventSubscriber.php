@@ -21,8 +21,7 @@ class MovieSavedEventSubscriber implements EventSubscriber
     {
         $movie = $args->getObject();
 
-        if ($movie instanceof Movie)
-        {
+        if ($movie instanceof Movie) {
             $event = new MovieSavedEvent($movie);
             $args->getObjectManager()->getEventManager()->dispatchEvent($event);
         }
