@@ -6,23 +6,48 @@ use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Get(
+            security: "is_granted('ROLE_USER')"
+        ),
+        new Post(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN') or (object.getOwner() == user)"
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN') or (object.getOwner() == user)"
+        )
+    ],
     normalizationContext: ['groups' => ['movie:read']],
 )]
 #[ApiFilter(RangeFilter::class, properties: ['duration' => 'partial'])]
+
 class Movie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -35,14 +60,19 @@ class Movie
     #[ORM\Column(length: 255)]
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'La description est obligatoire !')]
-    #[Assert\Length(min: 10, max: 255, minMessage: 'La description doit être d\'au moins {{ limit }} caractères', maxMessage: 'La description doit faire au maximum {{ limit }} caractères')]
+    #[Assert\Length(
+        min: 10,
+        max: 255,
+        minMessage: 'La description doit être d\'au moins {{ limit }} caractères',
+        maxMessage: 'La description doit faire au maximum {{ limit }} caractères'
+    )
+    ]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['movie:read'])]
     #[Assert\NotBlank(message: 'La date de sortie est obligatoire !')]
-    #[Assert\Date(message: 'Le date de sortie doit être dans le format (Y-m-d)')]
-    private ?\DateTime $releaseDate = null;
+    private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\Column]
     #[Groups(['movie:read'])]
@@ -55,9 +85,18 @@ class Movie
     #[Groups(['movie:read'])]
     private ?Category $category = null;
 
+    /** @var Collection<int, Actor> */
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
     #[Groups(['movie:read'])]
     private Collection $actor;
+
+    #[ORM\ManyToOne(inversedBy: 'movies')]
+    #[Groups(['movie:read'])]
+    private ?User $owner = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['movie:read'])]
+    private ?string $poster = null;
 
     public function __construct()
     {
@@ -94,12 +133,12 @@ class Movie
         return $this;
     }
 
-    public function getReleaseDate(): ?\DateTime
+    public function getReleaseDate(): ?\DateTimeInterface
     {
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTime $releaseDate): static
+    public function setReleaseDate(\DateTimeInterface $releaseDate): static
     {
         $this->releaseDate = $releaseDate;
 
@@ -150,6 +189,30 @@ class Movie
     public function removeActor(Actor $actor): static
     {
         $this->actor->removeElement($actor);
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getPoster(): ?string
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(string $poster): static
+    {
+        $this->poster = $poster;
 
         return $this;
     }

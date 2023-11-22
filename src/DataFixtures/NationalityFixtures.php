@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\Entity\Nationality;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-;
 
 class NationalityFixtures extends Fixture
 {
@@ -17,10 +16,10 @@ class NationalityFixtures extends Fixture
             'Américain', 'Français', 'Turc', 'Espagnol', 'Italien', 'Grec', 'Polonais', 'Colombien'
         ];
 
-        for ($i=0; $i <= 7; $i++) {
+        for ($i = 0; $i <= 7; $i++) {
             $actor = new Nationality();
             $actor->setNationality($nationalities[$i]);
-            $this->addReference(self::NATIONALITY_REFERENCE.$i, $actor);
+            $this->addReference(self::NATIONALITY_REFERENCE . $i, $actor);
             $manager->persist($actor);
         }
         $manager->flush();

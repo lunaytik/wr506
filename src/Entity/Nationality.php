@@ -22,6 +22,7 @@ class Nationality
     #[Groups(['actor:read'])]
     private ?string $nationality = null;
 
+    /** @var Collection<int, Actor> */
     #[ORM\OneToMany(mappedBy: 'nationality', targetEntity: Actor::class)]
     private Collection $actor;
 
