@@ -19,7 +19,7 @@ class Nationality
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['actor:read'])]
+    #[Groups(['actor:read', 'movie:read'])]
     private ?string $nationality = null;
 
     /** @var Collection<int, Actor> */

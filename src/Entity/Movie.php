@@ -45,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['movie:read']],
 )]
 #[ApiFilter(RangeFilter::class, properties: ['duration' => 'partial'])]
-
+#[ApiFilter(SearchFilter::class, properties: ['category.name' => 'partial',])]
 class Movie
 {
     #[ORM\Id]

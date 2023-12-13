@@ -19,7 +19,7 @@ class Actor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['actor:read'])]
+    #[Groups(['actor:read', 'movie:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -38,7 +38,7 @@ class Actor
     private Collection $movies;
 
     #[ORM\ManyToOne(inversedBy: 'actor')]
-    #[Groups(['actor:read'])]
+    #[Groups(['actor:read', 'movie:read'])]
     private ?Nationality $nationality = null;
 
     public function __construct()
