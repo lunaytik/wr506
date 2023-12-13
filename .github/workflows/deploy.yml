@@ -13,10 +13,10 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          script: |
-          cd public_html
-          git clone git@github.com:lunaytik/wr506.git
-          cd wr506
-          git pull
-          composer install
-          php bin/console c:c
+          script : |
+            cd public_html
+            git clone git@github.com:******/demo-symfony.git
+            cd demo-symfony
+            git pull
+            composer install
+            php bin/console c:c
